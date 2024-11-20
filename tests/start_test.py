@@ -46,6 +46,7 @@ async def test_create_and_delete_qr_code():
             "back_color": "white",
             "size": 10,
         }
+
         create_response = await ac.post("/qr-codes/", json=qr_request, headers=headers)
         assert create_response.status_code in [201, 409]  # Created or already exists
 
@@ -53,5 +54,6 @@ async def test_create_and_delete_qr_code():
         if create_response.status_code == 201:
             qr_code_url = create_response.json()["qr_code_url"]
             qr_filename = qr_code_url.split('/')[-1]
+            print(qr_filename)
             delete_response = await ac.delete(f"/qr-codes/{qr_filename}", headers=headers)
             assert delete_response.status_code == 204  # No Content, successfully deleted
